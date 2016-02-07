@@ -26,7 +26,7 @@
 (define k 38)
 
 (define golden-ratio-recursive (lambda () 
-  (cont-frac-recursive (lambda (i) 1.0) (lambda (i) 1.0) 38)))
+  (cont-frac-recursive (lambda (i) 1.0) (lambda (i) 1.0) k)))
 
 (define golden-ratio-iterative (lambda () 
-  (cont-frac-iterative (lambda (i) 1.0) (lambda (i) 1.0) 38)))
+  (cont-frac-iterative (lambda (i) 1.0) (lambda (i) 1.0) k)))
