@@ -5,4 +5,5 @@
 
 
 (((double (double double)) inc) 5)
-; 21 why? I don't get it.
+; answer 21
+; (double (double double)) => ((double double) (double double))
