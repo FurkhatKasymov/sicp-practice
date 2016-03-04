@@ -1,10 +1,10 @@
-; pascal triangle. recursive
+; pascal triangle. recursive 
 (define (pascal-triangle-recursive r d)
   (cond ((or (< r 1) (< d 1) (> d r)) 
           0)
-        ((or (= r 1) (= d 1)) 
+        ((or (= r 1) (= d 1))
           1)
         (else 
           (+ 
-            (P (- r 1) d) 
-            (P (- r 1) (- d 1))))))
+            (pascal-triangle-recursive (- r 1) d) 
+            (pascal-triangle-recursive (- r 1) (- d 1))))))
