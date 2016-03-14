@@ -1,0 +1,12 @@
+(define (subsets s)
+  (display s)
+  (display (null? s))
+  (newline)
+  (if (null? s) (list (list))
+      (let ((rest (subsets (cdr s))))
+        (display rest)
+        (display (car s))
+        (newline)
+        (append rest (map (lambda (x) (cons (car s) x)) rest)))))
+
+(subsets (list 1 2 3))
