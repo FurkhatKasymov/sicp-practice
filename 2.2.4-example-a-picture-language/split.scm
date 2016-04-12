@@ -1,5 +1,3 @@
-#lang scheme
-
 (require sicp-pict)
 
 (define (split p1 p2)

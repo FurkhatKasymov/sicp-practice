@@ -1,4 +1,3 @@
-#lang scheme
 (require sicp-pict)
 
 ;given

@@ -1,4 +1,3 @@
-#lang scheme
 (require sicp-pict)
 
 (paint (segments->painter (list (make-segment (make-vect 0 0) (make-vect 0 1))
