@@ -12,7 +12,8 @@
         current-type
         (if (null? rest)
             false
-            (iter-proc (car rest) (cdr rest))))))
+            (iter-proc (car rest) (cdr rest)))))
+  (iter-proc (car type-tags) (cdr type-tags)))
 
 
 (define (apply-generic op . args)
