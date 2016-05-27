@@ -16,17 +16,22 @@
 
 
 (define (apply-generic op . args)
+  (define (types-are-same? types)
+    (reduce (lambda (a b) (equal? a b)) true types))
   (let ((type-tags (map type-tag args)))
     (let ((proc (get op type-tags)))
       (if proc
           (apply proc (map contents args))
-          (let ((coerce-to-type (get-type-coerce-to type-tags)))
-              (if coerce-to-type
-                (apply-generic op 
-                               (map (lambda (x) 
-                                      (if (equal? (type-tag x) coerce-to-type)
-                                          x
-                                          ((get-coercion (type-tag x) coerce-to-type) x)))
-                                    args))
-                (error "No method for these types"
-                  (list op type-tags))))))))
+          (if (types-are-same? type-tags)
+              (error "No method for these types"
+                  (list op type-tags))
+              (let ((coerce-to-type (get-type-coerce-to type-tags)))
+                  (if coerce-to-type
+                    (apply-generic op 
+                                   (map (lambda (x) 
+                                          (if (equal? (type-tag x) coerce-to-type)
+                                              x
+                                              ((get-coercion (type-tag x) coerce-to-type) x)))
+                                        args))
+                    (error "No method for these types"
+                      (list op type-tags)))))))))

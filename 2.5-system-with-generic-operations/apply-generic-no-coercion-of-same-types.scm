@@ -20,7 +20,6 @@
                             (t2->t1
                              (apply-generic op a1 (t2->t1 a2)))
                             (else
-                             (error "No method for these types"
-                                    (list op type-tags)))))))
+                             (no-method-error))))))
               (no-method-error))))))
 
