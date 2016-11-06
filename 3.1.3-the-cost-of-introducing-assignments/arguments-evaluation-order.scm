@@ -5,7 +5,7 @@
 ; but will return 1 if the arguments are evaluated from right to left.
 
 (define f
-  (let ((state null))
+  (let ((state '()))
     (lambda (val)
       (if (null? state)
           (begin
