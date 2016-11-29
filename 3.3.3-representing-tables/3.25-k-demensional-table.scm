@@ -1,0 +1,72 @@
+; Generilizing one- and two- demensional tables, show how to implement a table
+; in which values're stored under arbitrary number of keys and different
+; values may be stored under different number of keys. The lookup and insert! 
+; procedures should take as input a list of keys used to access the table
+
+(define (lookup keys table)
+  (let ((record (assoc (car keys) (cdr table))))
+       (if record
+           (if (null? (cdr keys))
+               (if (table? (cdr record))
+                   (lookup (list '*this*) (cdr record))
+                   (cdr record))
+               (if (table? (cdr record))
+                   (lookup (cdr keys) (cdr record))
+                   false))
+           false)))
+
+(define (assoc key records)
+  (cond ((null? records) false)
+        ((equal? key (caar records)) (car records))
+        (else (assoc key (cdr records)))))
+
+(define (insert! keys value table)
+  (let ((record (assoc (car keys) (cdr table))))
+       (if record
+           (if (null? (cdr keys))
+               (if (table? (cdr record))
+                   (insert! (list '*this*) value (cdr record))
+                   (set-cdr! record value))
+               (if (table? (cdr record))
+                   (insert! (cdr keys) value (cdr record))
+                   (let ((new-table (make-table)))
+                        (insert! (cdr keys) value new-table)
+                        (insert! (list '*this*) (cdr record) new-table)
+                        (set-cdr! record new-table))))
+           (if (null? (cdr keys))
+               (set-cdr! table (cons (cons (car keys)
+                                          value)
+                                    (cdr table)))
+               (let ((new-table (make-table)))
+                    (insert! (cdr keys) value new-table)
+                    (set-cdr! table (cons (cons (car keys)
+                                                new-table)
+                                          (cdr table)))))))
+  'ok)
+
+(define (make-table)
+  (list '*table*))
+
+(define (table? x)
+  (and (pair? x)
+       (equal? (car x) '*table*)))
+
+(define (test)
+  (define t (make-table))
+  ; (*table*)
+  (insert! (list 'a) 'a t)
+  (insert! (list 'a 'b 'c) 'abc t)
+  (insert! (list 'a 'b) 'ab t)
+  (insert! (list 'c 'b) 'cb t)
+  (let ((works? (and (equal? (lookup (list 'a) t) 
+                             'a)
+                     (equal? (lookup (list 'a 'b 'c) t) 
+                             'abc)
+                     (equal? (lookup (list 'a 'b) t) 
+                             'ab)
+                     (equal? (lookup (list 'c 'b) t) 
+                             'cb))))
+       (if works?
+           (display "Test passed")
+           (display "Test failed"))
+       works?))
